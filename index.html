@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 <title>📚 Ray Peat's Bioenergetic Bibliography</title>
 <style>
     /* ---------- theme variables ---------- */
@@ -210,7 +211,7 @@
   If you opened this file directly from disk (double-click), browsers block reading the folder.
   Options:
   <ul>
-    <li>One-time preview — select your <code>books_semicolon.csv</code> (or <code>books.csv</code>) here:
+    <li>One-time preview — select your <code>books.csv</code> here:
       <input type="file" id="csvFile" accept=".csv,text/csv"></li>
     <li>Local server — run <code>python3 -m http.server 8000</code> (or <code>py -m http.server 8000</code> on Windows)
       in this folder and open <code>http://localhost:8000</code>.</li>
@@ -289,7 +290,7 @@ function initFromCSVText(text) {
 
   /* Detect the column separator from the header line:
      whichever of ";" or "," appears more often wins.
-     (Your semicolon file: 8 × ";" in the header → sep = ";") */
+     (Your CSV file: 8 × ";" in the header → sep = ";") */
   const firstLine = raw.split('\n')[0];
   const count = (s, ch) => s.split(ch).length - 1;
   const sep = count(firstLine, ';') > count(firstLine, ',') ? ';' : ',';
@@ -476,9 +477,9 @@ let saved = 'dark';               // ← default
 try { saved = localStorage.getItem('theme') || 'dark'; } catch (e) {}
 applyTheme(saved);
 
-/* ---------- loader: try the semicolon file first, then books.csv ---------- */
+/* ---------- loader: try books.csv ---------- */
 async function loadBooks() {
-  for (const file of ['books_semicolon.csv', 'books.csv']) {
+  for (const file of ['books.csv']) {
     try {
       const res = await fetch(file, { cache: 'no-cache' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -487,7 +488,7 @@ async function loadBooks() {
     } catch (err) { /* try the next file */ }
   }
   document.getElementById('fallback').style.display = 'block';
-  document.getElementById('fallbackReason').textContent = ' (no books_semicolon.csv or books.csv found)';
+  document.getElementById('fallbackReason').textContent = ' (no books.csv found)';
 }
 
 /* Fallback: manual file selection (works when index.html is opened directly from disk) */
